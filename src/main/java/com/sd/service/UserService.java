@@ -15,7 +15,7 @@ public interface UserService extends IService<User> {
      * @param code    验证码
      * @return 新用户 id
      */
-    int userRegister(String userAccount, String userPassword, String checkPassword, String code);
+    Long userRegister(String userAccount, String userPassword, String checkPassword, String code);
 
     /**
      * 用户登录
@@ -27,5 +27,4 @@ public interface UserService extends IService<User> {
      */
     User userLogin(String userAccount, String userPassword, HttpServletRequest request);
 
-    User getSafetyUser(User originUser);
 }

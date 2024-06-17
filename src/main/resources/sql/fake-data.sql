@@ -53,7 +53,7 @@ VALUES
     (9, 9, 4, 1999.96, '2024-06-16 18:15:00', 'Purchase of chairs'),
     (10, 10, 6, 479.94, '2024-06-16 19:00:00', 'Purchase of microwaves');
 
-INSERT  INTO User (user_id, user_account, user_password)
+INSERT  INTO User (user_account, user_password,user_level)
 VALUES
-    (1,'123','123'),
-    (2,'shen','123');
+    ('123','123','0'),
+    ('shen','123','0');

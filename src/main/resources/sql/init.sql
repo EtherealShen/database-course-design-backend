@@ -54,8 +54,9 @@ CREATE TABLE purchase (
 );
 
 -- 创建用户表User
-CREATE TABLE User (
-    user_id INT PRIMARY KEY,
+CREATE TABLE user (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
     user_account VARCHAR(255),
-    user_password VARCHAR(255)
+    user_password VARCHAR(255),
+    user_level ENUM('0','1') DEFAULT '0'
 );

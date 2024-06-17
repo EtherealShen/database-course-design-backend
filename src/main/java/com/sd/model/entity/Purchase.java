@@ -11,11 +11,11 @@ public class Purchase {
 
     // 采购订单编号
     @TableId
-    private int purchaseOrderNumber;
+    private Long purchaseOrderNumber;
     // 员工编号（外码）
-    private String employeeId;
+    private Integer employeeId;
     // 采购数量
-    private int purchaseQuantity;
+    private Long purchaseQuantity;
     // 采购价格
     private double totalPurchasePrice;
     // 采购日期

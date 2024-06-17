@@ -7,7 +7,7 @@ import lombok.Data;
 public class Customer {
     // 客户编号
     @TableId
-    private int customerId;
+    private Long customerId;
     // 客户名称
     private String customerName;
     // 客户简称

@@ -12,6 +12,9 @@ spring:
       enabled: true
       additional-paths: src/main/java
       exclude: test/**
+  redis:
+    host: 127.0.0.1
+    port: 6379
 
 logging:
   level:
@@ -22,4 +25,23 @@ logging:
 
 mybatis-plus:
   type-aliases-package: com.sd.model.entity
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      update-strategy: not_null
+      id-type: auto
 
+
+knife4j:
+  enable: true
+  openapi:
+    title: "用户管理接口文档"
+    description: "用户管理接口文档"
+    version: v1.0.0
+    group:
+      default:
+        group-name: default
+        api-rule: package
+        api-rule-resources:
+          - com.sd.controller

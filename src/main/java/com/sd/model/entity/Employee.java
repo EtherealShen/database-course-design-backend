@@ -7,7 +7,7 @@ import lombok.Data;
 public class Employee {
     // 员工编号
     @TableId
-    private int employeeId;
+    private Long employeeId;
     // 员工姓名
     private String employeeName;
     // 员工密码

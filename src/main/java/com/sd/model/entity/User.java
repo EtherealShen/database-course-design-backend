@@ -7,15 +7,15 @@ import lombok.Data;
 
 @Data
 public class User {
-    // 管理员编号
-    @TableId
-    @TableField("user_id")
-    private int userId;
-    // 管理员账号
-    @TableField("user_account")
+    // 用户编号
+    @TableId()
+    private Long userId;
+
+    // 用户账号
     private String userAccount;
 
-    // 管理员密码
-    @TableField("user_password")
+    // 用户密码
     private String userPassword;
+
+    private String UserLevel;
 }
