@@ -11,7 +11,7 @@ public class Purchase {
 
     // 采购订单编号
     @TableId
-    private Long purchaseOrderNumber;
+    private Long purchaseId;
     // 员工编号（外码）
     private Integer employeeId;
     // 采购数量

@@ -3,6 +3,8 @@ package com.sd.controller;
 
 
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.sd.model.entity.Employee;
 import com.sd.model.entity.Purchase;
 
 import com.sd.service.PurchaseService;
@@ -45,5 +47,16 @@ public class PurchaseController {
     @GetMapping ()
     public List<Purchase> getPurchaseByIds(@ApiParam("多个id") @RequestParam ("ids") List<Long> ids){
         return purchaseService.listByIds(ids);
+    }
+
+    @ApiOperation("采购订单修改接口")
+    @PutMapping()
+    public Purchase updatePurchase(@RequestBody Purchase purchase){
+        UpdateWrapper<Purchase> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("purchase_id", purchase.getPurchaseId());
+        if(purchaseService.update(purchase,updateWrapper)){
+            return purchaseService.getById(purchase.getPurchaseId());
+        };
+        return null;
     }
 }

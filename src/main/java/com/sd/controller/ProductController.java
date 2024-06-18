@@ -1,7 +1,7 @@
 package com.sd.controller;
 
 
-import com.sd.model.entity.Employee;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.sd.model.entity.Product;
 import com.sd.service.ProductService;
 import io.swagger.annotations.Api;
@@ -41,5 +41,16 @@ public class ProductController {
     @GetMapping ()
     public List<Product> getProductByIds(@ApiParam("多个id") @RequestParam ("ids") List<Long> ids){
         return productService.listByIds(ids);
+    }
+
+    @ApiOperation("修改产品接口")
+    @PutMapping()
+    public Product updateProduct(@RequestBody Product product){
+        UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("product_id",product.getProductId());
+        if(productService.update(product,updateWrapper)){
+            return productService.getById(product.getProductId());
+        }
+        return null;
     }
 }

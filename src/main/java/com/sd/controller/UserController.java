@@ -11,6 +11,8 @@ import com.sd.model.entity.User;
 import com.sd.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 
 @Api(tags = "用户管理接口")
@@ -29,6 +32,9 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private RedisTemplate redisTemplate;
 
     @ApiOperation("用户登录接口")
     @PostMapping("/login")
@@ -68,7 +74,10 @@ public class UserController {
     public void getCodeImage(HttpSession session, HttpServletResponse response) throws IOException {
         BufferedImage codeImage = CodeImage.getVerifiCodeImage();
         String code = new String(CodeImage.getVerifiCode());
+        redisTemplate.opsForValue().set("verifiCode", code);
+        redisTemplate.expire("verifiCode", 60, TimeUnit.SECONDS);
         session.setAttribute("code", code);
         ImageIO.write(codeImage, "JPG", response.getOutputStream());
+
     }
 }

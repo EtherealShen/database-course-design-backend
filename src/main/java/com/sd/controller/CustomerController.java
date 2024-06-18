@@ -1,9 +1,8 @@
 package com.sd.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.sd.model.entity.Customer;
-
-import com.sd.model.entity.Employee;
 import com.sd.service.CustomerService;
 
 import io.swagger.annotations.Api;
@@ -47,10 +46,20 @@ public class CustomerController {
         return customerService.listByIds(ids);
     }
 
-    @ApiOperation("批量查询用户接口")
+    @ApiOperation("批量查询客户接口")
     @GetMapping ("all")
     public List<Customer> getAllCustomer(){
         return customerService.getAllCustomer();
     }
 
+    @ApiOperation("修改客户接口")
+    @PutMapping()
+    public Customer updateCustomer(@RequestBody Customer customer){
+        UpdateWrapper<Customer> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("customer_id", customer.getCustomerId());
+        if(customerService.update(customer,updateWrapper)){
+            return customerService.getById(customer.getCustomerId());
+        };
+        return null;
+    }
 }
