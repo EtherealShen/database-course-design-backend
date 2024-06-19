@@ -45,7 +45,7 @@ public class EmployeeController {
         return employeeService.listByIds(ids);
     }
 
-    @ApiOperation("批量查询员工接口")
+    @ApiOperation("查询所有员工接口")
     @GetMapping ("all")
     public List<Employee> getAllEmployee(){
         return employeeService.getAllEmployees();

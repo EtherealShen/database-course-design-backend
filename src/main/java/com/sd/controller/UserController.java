@@ -1,10 +1,11 @@
 package com.sd.controller;
 
 
-import com.sd.common.BaseResponse;
+import cn.hutool.jwt.JWTUtil;
+import com.sd.common.MetaData;
+import com.sd.common.Response;
 import com.sd.common.CodeImage;
-import com.sd.common.ResultsUtils;
-import com.sd.common.StatusCode;
+import com.sd.common.TabBar;
 import com.sd.model.domain.UserLoginRequest;
 import com.sd.model.domain.UserRegisterRequest;
 import com.sd.model.entity.User;
@@ -22,37 +23,53 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 
 @Api(tags = "用户管理接口")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("")
 public class UserController {
 
     @Resource
     private UserService userService;
+
+    private String tokenKey = "Ambrose";
 
     @Resource
     private RedisTemplate redisTemplate;
 
     @ApiOperation("用户登录接口")
     @PostMapping("/login")
-    public BaseResponse<User> UserLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
+    public Response<User> UserLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletResponse httpServletResponse) {
 
         String userAccount = userLoginRequest.getAccount();
         String userPassword = userLoginRequest.getPassword();
 
-        User user = userService.userLogin(userAccount, userPassword, request);
-        if(user == null){
-            return ResultsUtils.failure(StatusCode.NULL_ERROR);
+        Long result = userService.userLogin(userAccount, userPassword);
+        if (result == -1) {
+            MetaData metaData = new MetaData(402, "账号不存在");
+            return new Response<>(200, metaData);
+        } else if (result == -2) {
+            MetaData metaData = new MetaData(403, "密码错误");
+            return new Response<>(200, metaData);
         }
-        return ResultsUtils.success(StatusCode.SUCCESS,user);
+        User user = userService.getById(result);
+        HashMap<String, Object> tokenMap = new HashMap<>();
+        tokenMap.put("accout",user.getUserAccount());
+        tokenMap.put("id",user.getUserId());
+        // 生成token
+        String token = JWTUtil.createToken(tokenMap,tokenKey.getBytes());
+        MetaData metaData = new MetaData(200, "登录成功",token);
+        return new Response<>(200, user, metaData);
+
     }
 
     @ApiOperation("用户注册接口")
     @PostMapping("/register")
-    public BaseResponse<Long> UserRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
+    public Response<User> UserRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
 
         String userAccount = userRegisterRequest.getAccount();
         String userPassword = userRegisterRequest.getPassword();
@@ -61,12 +78,16 @@ public class UserController {
 
         Long result = userService.userRegister(userAccount, userPassword, checkPassword, code);
 
-        if(result==-1){
-            return ResultsUtils.failure(StatusCode.FAILURE,"注册失败");
-        } else if (result==-2) {
-            return ResultsUtils.failure(StatusCode.FAILURE,"用户已存在");
+        if (result == -1) {
+            MetaData metaData = new MetaData(500, "出错，注册失败");
+            return new Response<>(200, metaData);
+        } else if (result == -2) {
+            MetaData metaData = new MetaData(401, "该账号已存在");
+            return new Response<>(200, metaData);
         }
-        return ResultsUtils.success(StatusCode.SUCCESS,result);
+        MetaData metaData = new MetaData(200, "注册成功");
+        User user = userService.getById(result);
+        return new Response<>(200, user, metaData);
     }
 
     @ApiOperation("获取验证码接口")

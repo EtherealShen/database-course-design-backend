@@ -1,19 +1,22 @@
 package com.sd.service.impl;
 
+import cn.hutool.jwt.JWTUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
 
 import com.sd.mapper.UserMapper;
 import com.sd.model.entity.User;
 import com.sd.service.UserService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 
 
 @Service
@@ -25,21 +28,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Resource
     private UserMapper userMapper;
 
+
+
+
     @Override
-    public User userLogin(String userAccount, String userPassword,HttpServletRequest request) {
-        // 加密
+    public Long userLogin(String userAccount, String userPassword) {
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_account", userAccount);
-        queryWrapper.eq("user_password", encryptPassword);
         User user = userMapper.selectOne(queryWrapper);
-        // 用户不存在
+        // 账号不存在
         if (user == null) {
-            return null;
+            return -1L;
         }
-        // 记录用户的登录态
-        request.getSession().setAttribute("loginState", user);
-        return user;
+        // 密码错误
+        if (!encryptPassword.equals(user.getUserPassword())) {
+            return -2L;
+        }
+        return user.getUserId();
     }
 
     @Override
