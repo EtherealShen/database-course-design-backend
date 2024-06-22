@@ -7,15 +7,17 @@ import lombok.Data;
 public class Product {
     // 商品编号
     @TableId
-    private Long productId;
+    private Long id;
     // 商品名称
-    private String productName;
+    private String name;
     // 商品单价
     private double unitPrice;
     // 供应商编号（外码）
-    private Integer supplierId;
+    private Integer producerId;
     // 商品简介
-    private String productDescription;
+    private String description;
     // 备注
     private String remarks;
+    // 是否删除
+    private Integer is_del;
 }

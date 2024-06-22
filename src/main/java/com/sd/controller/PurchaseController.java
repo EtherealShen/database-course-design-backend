@@ -1,9 +1,8 @@
 package com.sd.controller;
 
 
-
-
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.sd.common.Response;
 import com.sd.model.entity.Employee;
 import com.sd.model.entity.Purchase;
 
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 
 @Api(tags = "采购管理接口")
@@ -27,36 +27,45 @@ public class PurchaseController {
 
     @ApiOperation("新增采购订单接口")
     @PostMapping()
-    public boolean savePurchase(@RequestBody Purchase purchase){
-        return purchaseService.save(purchase);
+    public Response savePurchase(@RequestBody Purchase purchase){
+        if(purchaseService.save(purchase)){
+            return Response.success();
+        }
+        return Response.error();
     }
 
     @ApiOperation("删除采购订单接口")
-    @DeleteMapping ("{id}")
-    public boolean delPurchase(@PathVariable("id") Long id){
-        return purchaseService.removeById(id);
+    @DeleteMapping ()
+    public Response delPurchase(@RequestParam("id") Long id){
+        if(purchaseService.removeById(id)){
+            return Response.success();
+        }
+        return Response.error();
     }
 
     @ApiOperation("查询采购订单接口")
     @GetMapping ("{id}")
-    public Purchase getPurchaseById(@PathVariable("id") Long id){
-        return purchaseService.getById(id);
-    }
-
-    @ApiOperation("批量查询采购订单接口")
-    @GetMapping ()
-    public List<Purchase> getPurchaseByIds(@ApiParam("多个id") @RequestParam ("ids") List<Long> ids){
-        return purchaseService.listByIds(ids);
+    public Response getPurchaseById(@PathVariable("id") Long id){
+        return Response.success(purchaseService.getById(id));
     }
 
     @ApiOperation("采购订单修改接口")
     @PutMapping()
-    public Purchase updatePurchase(@RequestBody Purchase purchase){
+    public Response updatePurchase(@RequestBody Purchase purchase){
         UpdateWrapper<Purchase> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("purchase_id", purchase.getPurchaseId());
+        updateWrapper.eq("id", purchase.getId());
         if(purchaseService.update(purchase,updateWrapper)){
-            return purchaseService.getById(purchase.getPurchaseId());
+            return Response.success(purchaseService.getById(purchase.getId()));
         };
-        return null;
+        return Response.error("订单不存在");
     }
+
+    @ApiOperation("分页查询订单接口")
+    @GetMapping ()
+    public Response getPurchaseList(@RequestParam("pageNum") Integer pageNum,@RequestParam("pageSize") Integer pageSize,@RequestParam("query") String query){
+        Map map = purchaseService.purchasePage(pageNum, pageSize,query);
+        long total = (long) map.get("total");
+        return total>0?Response.success(map):Response.error("数据不足");
+    }
+
 }

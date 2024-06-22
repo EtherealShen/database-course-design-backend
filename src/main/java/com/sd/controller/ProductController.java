@@ -2,6 +2,7 @@ package com.sd.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.sd.common.Response;
 import com.sd.model.entity.Product;
 import com.sd.service.ProductService;
 import io.swagger.annotations.Api;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "产品接口")
 @RestController
@@ -21,36 +23,43 @@ public class ProductController {
 
     @ApiOperation("新增产品接口")
     @PostMapping()
-    public boolean saveProduct(@RequestBody Product product){
-        return productService.save(product);
+    public Response saveProduct(@RequestBody Product product){
+        if(productService.save(product)){
+            return Response.success();
+        }
+        return Response.error();
     }
 
     @ApiOperation("删除产品接口")
-    @DeleteMapping("{id}")
-    public boolean delProduct(@PathVariable("id") Long id){
-        return productService.removeById(id);
+    @DeleteMapping()
+    public Response delProduct(@RequestParam("id") Long id){
+        if(productService.removeById(id)){
+            return Response.success();
+        }
+        return Response.error();
     }
 
     @ApiOperation("查询产品接口")
     @GetMapping ("{id}")
-    public Product getProductById(@PathVariable("id") Long id){
-        return productService.getById(id);
-    }
-
-    @ApiOperation("批量查询产品接口")
-    @GetMapping ()
-    public List<Product> getProductByIds(@ApiParam("多个id") @RequestParam ("ids") List<Long> ids){
-        return productService.listByIds(ids);
+    public Response getProductById(@PathVariable("id") Long id){
+        return Response.success(productService.getById(id));
     }
 
     @ApiOperation("修改产品接口")
     @PutMapping()
-    public Product updateProduct(@RequestBody Product product){
+    public Response updateProduct(@RequestBody Product product){
         UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("product_id",product.getProductId());
+        updateWrapper.eq("id",product.getId());
         if(productService.update(product,updateWrapper)){
-            return productService.getById(product.getProductId());
+            return Response.success(productService.getById(product.getId()));
         }
-        return null;
+        return Response.error("产品不存在");
+    }
+    @ApiOperation("分页查询产品接口")
+    @GetMapping ()
+    public Response getProductList(@RequestParam("pageNum") Integer pageNum,@RequestParam("pageSize") Integer pageSize,@RequestParam("query") String query){
+        Map map = productService.productPage(pageNum, pageSize,query);
+        long total = (long) map.get("total");
+        return total>0?Response.success(map):Response.error("数据不足");
     }
 }

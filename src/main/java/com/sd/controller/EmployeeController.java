@@ -2,15 +2,15 @@ package com.sd.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.sd.common.Response;
 import com.sd.model.entity.Employee;
 import com.sd.service.EmployeeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.Map;
 
 
 @Api(tags = "员工接口")
@@ -23,42 +23,44 @@ public class EmployeeController {
 
     @ApiOperation("新增员工接口")
     @PostMapping()
-    public boolean saveEmployee(@RequestBody Employee employee){
-        return employeeService.save(employee);
+    public Response saveEmployee(@RequestBody Employee employee){
+        if(employeeService.save(employee)){
+            return Response.success();
+        }
+        return Response.error();
     }
 
     @ApiOperation("删除员工接口")
-    @DeleteMapping ("{id}")
-    public boolean delEmployee(@PathVariable("id") Long id){
-        return employeeService.removeById(id);
+    @DeleteMapping ()
+    public Response delEmployee(@RequestParam("id") Long id){
+        if(employeeService.removeById(id)){
+            return Response.success();
+        }
+        return Response.error();
     }
 
     @ApiOperation("查询员工接口")
     @GetMapping ("{id}")
-    public Employee getEmployeeById(@PathVariable("id") Long id){
-        return employeeService.getById(id);
-    }
-
-    @ApiOperation("批量查询员工接口")
-    @GetMapping ()
-    public List<Employee> getEmployeeByIds(@ApiParam("多个id") @RequestParam ("ids") List<Long> ids){
-        return employeeService.listByIds(ids);
-    }
-
-    @ApiOperation("查询所有员工接口")
-    @GetMapping ("all")
-    public List<Employee> getAllEmployee(){
-        return employeeService.getAllEmployees();
+    public Response getEmployeeById(@PathVariable("id") Long id){
+        return Response.success(employeeService.getById(id));
     }
 
     @ApiOperation("修改员工接口")
     @PutMapping()
-    public Employee updateEmployee(@RequestBody Employee employee){
+    public Response updateEmployee(@RequestBody Employee employee){
         UpdateWrapper<Employee> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("employee_id", employee.getEmployeeId());
+        updateWrapper.eq("id", employee.getId());
         if(employeeService.update(employee,updateWrapper)){
-            return employeeService.getById(employee.getEmployeeId());
+            return Response.success(employeeService.getById(employee.getId()));
         };
-        return null;
+        return Response.error("用户不存在");
+    }
+
+    @ApiOperation("分页查询员工接口")
+    @GetMapping ()
+    public Response getEmployeeList(@RequestParam("pageNum") Integer pageNum,@RequestParam("pageSize") Integer pageSize,@RequestParam("query") String query){
+        Map map = employeeService.employeePage(pageNum, pageSize,query);
+        long total = (long) map.get("total");
+        return total>0?Response.success(map):Response.error("数据不足");
     }
 }

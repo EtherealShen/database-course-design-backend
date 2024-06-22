@@ -1,28 +1,41 @@
 package com.sd.common;
 
 
+import io.swagger.models.auth.In;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Response<T> {
 
     // 状态码
-    private int status;
+    private int code;
     // 数据
     private T data;
-    // 元数据
-    private MetaData metaData;
+    // 信息
+    private String msg;
 
-
-    public Response(int status, MetaData metaData) {
-        this.status = status;
-        this.data = null;
-        this.metaData = metaData;
+    public static Response success(){
+        return new Response(200,null,"操作成功");
     }
+    public static Response success(Object data){
+        return new Response(200,data,"操作成功");
+    }
+    public static Response success(Object data,String msg){
+        return new Response(200,data,msg);
+    }
+    public static Response error(String msg){
+        return new Response(400,null,msg);
+    }
+    public static Response error(int code,String msg){
+        return new Response(code,null,msg);
 
-    public Response(int status, T data, MetaData metaData) {
-        this.status = status;
-        this.data = data;
-        this.metaData = metaData;
+    }
+    public static Response error(){
+        return new Response(400,null,"操作失败");
+
     }
 }

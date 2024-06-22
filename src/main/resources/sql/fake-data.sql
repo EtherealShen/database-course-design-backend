@@ -1,59 +1,112 @@
+INSERT INTO employee (id, name, password, level, tel, salary, remarks, is_del) VALUES
+    (1, '张三', '123456', 2, '13812345678', 5000.00, '优秀员工', '0'),
+    (2, '李四', '654321', 3, '13987654321', 6000.00, '工作认真负责', '0'),
+    (3, '王五', 'abcdef', 1, '13698765432', 4500.00, '表现稳定', '0'),
+    (4, '赵六', 'fedcba', 2, '13512345678', 5200.00, '擅长团队合作', '1'),
+    (5, '刘七', '111111', 3, '13787654321', 6200.00, '有领导能力', '0'),
+    (6, '陈八', '222222', 1, '13876543210', 4200.00, '工作积极主动', '0'),
+    (7, '杨九', '333333', 2, '13654321098', 4800.00, '沟通能力强', '1'),
+    (8, '周十', '444444', 3, '13901234567', 5500.00, '具备技术专长', '0'),
+    (9, '吴十一', '555555', 1, '13509876543', 4300.00, '灵活应对工作变动', '0'),
+    (10, '郑十二', '666666', 2, '13876543209', 5100.00, '工作态度端正', '0'),
+    (11, '黄十三', '777777', 3, '13765432109', 5900.00, '注重细节', '1'),
+    (12, '马十四', '888888', 1, '13654321098', 4400.00, '工作主动性高', '0'),
+    (13, '林十五', '999999', 2, '13909876543', 5300.00, '适应能力强', '0'),
+    (14, '洪十六', '000000', 3, '13543210987', 6100.00, '具备领导潜质', '1'),
+    (15, '徐十七', 'qwerty', 1, '13876543210', 4600.00, '工作细致认真', '0'),
+    (16, '胡十八', 'asdfgh', 2, '13987654321', 5400.00, '善于解决问题', '0'),
+    (17, '朱十九', 'zxcvbn', 3, '13654321098', 6300.00, '学习能力强', '1'),
+    (18, '何二十', 'poiuyt', 1, '13509876543', 4200.00, '工作积极配合', '0'),
+    (19, '罗二十一', 'mnbvcx', 2, '13876543210', 5700.00, '有创造力', '0'),
+    (20, '林二十二', 'lkjhgf', 3, '13765432109', 6000.00, '沉稳冷静', '1');
 
 
-INSERT INTO customer (customer_id, customer_name, customer_abbreviation, address, company_phone, email, contact_person, contact_phone, remarks)
-VALUES
-    (1, 'ABC Suppliers', 'ABC', '123 Main Street', '123-456-7890', 'abc@supplier.com', 'John Doe', '987-654-3210', 'Supplier for electronics'),
-    (2, 'XYZ Distributors', 'XYZ', '456 Elm Street', '456-789-0123', 'xyz@distributor.com', 'Jane Smith', '012-345-6789', 'Supplier for household items'),
-    (3, '123 Wholesalers', '123', '789 Oak Avenue', '789-012-3456', '123@wholesaler.com', 'Mike Johnson', '345-678-9012', 'Supplier for clothing'),
-    (4, 'Global Imports', 'Global', '987 Pine Road', '987-654-3210', 'global@imports.com', 'Sarah Thompson', '678-901-2345', 'Supplier for furniture'),
-    (5, 'Best Deals', 'Best', '321 Cedar Lane', '012-345-6789', 'best@deals.com', 'David Miller', '901-234-5678', 'Supplier for appliances'),
-    (6, 'Superior Goods', 'Superior', '654 Maple Avenue', '345-678-9012', 'superior@goods.com', 'Amy Wilson', '234-567-8901', 'Supplier for beauty products'),
-    (7, 'Mega Suppliers', 'Mega', '890 Walnut Street', '789-012-3456', 'mega@suppliers.com', 'Michael Brown', '567-890-1234', 'Supplier for groceries'),
-    (8, 'Prime Distributors', 'Prime', '432 Oak Avenue', '234-567-8901', 'prime@distributors.com', 'Jennifer Davis', '890-123-4567', 'Supplier for electronics'),
-    (9, 'Global Imports', 'Global', '876 Pine Road', '901-234-5678', 'global@imports.com', 'Daniel Wilson', '456-789-0123', 'Supplier for furniture'),
-    (10, 'Best Deals', 'Best', '123 Cedar Lane', '678-901-2345', 'best@deals.com', 'Emily Johnson', '012-345-6789', 'Supplier for appliances');
+INSERT INTO producer (id, name, abbreviation, address, tel, email, contact_person, contact_tel, remarks, is_del) VALUES
+    (1, '供应商1', '供1', '北京市朝阳区xxx街道xxx号', '010-12345678', 'supplier1@example.com', '张三', '13812345678', '质量可靠', '0'),
+    (2, '供应商2', '供2', '上海市黄浦区yyy街道yyy号', '021-87654321', 'supplier2@example.com', '李四', '13987654321', '价格优惠', '0'),
+    (3, '供应商3', '供3', '广州市天河区zzz街道zzz号', '020-98765432', 'supplier3@example.com', '王五', '13698765432', '服务周到', '0'),
+    (4, '供应商4', '供4', '深圳市福田区www街道www号', '0755-12345678', 'supplier4@example.com', '赵六', '13512345678', '交货及时', '1'),
+    (5, '供应商5', '供5', '重庆市渝中区qqq街道qqq号', '023-87654321', 'supplier5@example.com', '刘七', '13787654321', '长期合作', '0'),
+    (6, '供应商6', '供6', '成都市锦江区xxx街道xxx号', '028-76543210', 'supplier6@example.com', '陈八', '13876543210', '产品种类丰富', '0'),
+    (7, '供应商7', '供7', '武汉市江岸区yyy街道yyy号', '027-54321098', 'supplier7@example.com', '杨九', '13654321098', '信誉良好', '1'),
+    (8, '供应商8', '供8', '南京市玄武区zzz街道zzz号', '025-01234567', 'supplier8@example.com', '周十', '13901234567', '合作稳定', '0'),
+    (9, '供应商9', '供9', '杭州市西湖区www街道www号', '0571-09876543', 'supplier9@example.com', '吴十一', '13509876543', '质量保证', '0'),
+    (10, '供应商10', '供10', '济南市历下区qqq街道qqq号', '0531-76543210', 'supplier10@example.com', '郑十二', '13876543209', '价格合理', '0'),
+    (11, '供应商11', '供11', '青岛市市南区xxx街道xxx号', '0532-65432109', 'supplier11@example.com', '黄十三', '13765432109', '有品牌优势', '1'),
+    (12, '供应商12', '供12', '大连市中山区yyy街道yyy号', '0411-54321098', 'supplier12@example.com', '马十四', '13654321098', '快速响应', '0'),
+    (13, '供应商13', '供13', '厦门市思明区zzz街道zzz号', '0592-09876543', 'supplier13@example.com', '林十五', '13909876543', '良好售后服务', '0'),
+    (14, '供应商14', '供14', '苏州市姑苏区www街道www号', '0512-43210987', 'supplier14@example.com', '洪十六', '13543210987', '稳定供货', '1'),
+    (15, '供应商15', '供15', '长沙市岳麓区qqq街道qqq号', '0731-76543210', 'supplier15@example.com', '徐十七', '13876543210', '产品质量优秀', '0'),
+    (16, '供应商16', '供16', '郑州市中原区yyy街道yyy号', '0371-87654321', 'supplier16@example.com', '胡十八', '13987654321', '价格实惠', '0'),
+    (17, '供应商17', '供17', '西安市雁塔区zzz街道zzz号', '029-54321098', 'supplier17@example.com', '朱十九', '13654321098', '及时反馈', '1'),
+    (18, '供应商18', '供18', '福州市鼓楼区www街道www号', '0591-01234567', 'supplier18@example.com', '何二十', '13509876543', '信用良好', '0'),
+    (19, '供应商19', '供19', '南宁市青秀区qqq街道qqq号', '0771-76543210', 'supplier19@example.com', '罗二十一', '13876543210', '多年合作', '0'),
+    (20, '供应商20', '供20', '呼和浩特市新城区xxx街道xxx号', '0471-65432109', 'supplier20@example.com', '林二十二', '13765432109', '高效沟通', '1');
 
-INSERT INTO product (product_id, product_name, unit_price, customer_id, product_description, remarks)
-VALUES
-    (1, 'Laptop', 999.99, 1, 'High-performance laptop with Intel processor', 'Gaming laptop'),
-    (2, 'TV', 699.99, 2, '55-inch LED TV with 4K resolution', 'Smart TV'),
-    (3, 'T-Shirt', 19.99, 3, 'Cotton T-shirt in various colors', 'Unisex T-shirt'),
-    (4, 'Sofa', 799.99, 4, '3-seater fabric sofa with wooden frame', 'Modern design'),
-    (5, 'Refrigerator', 899.99, 5, 'Energy-efficient refrigerator with double doors', 'Large capacity'),
-    (6, 'Shampoo', 9.99, 6, 'Moisturizing shampoo for all hair types', 'Contains natural extracts'),
-    (7, 'Cereal', 4.99, 7, 'Whole grain cereal with added vitamins', 'Healthy breakfast option'),
-    (8, 'Headphones', 49.99, 8, 'Wireless headphones with noise cancellation', 'Bluetooth connectivity'),
-    (9, 'Chair', 49.99, 4, 'Ergonomic office chair with adjustable features', 'Comfortable seating'),
-    (10, 'Microwave', 79.99, 5, 'Compact microwave oven with multiple functions', 'Easy-to-use controls');
+INSERT INTO product (id, name, unit_price, description, remarks, producer_id, is_del) VALUES
+    (1, '产品1', 99.99, '这是产品1的描述。', '备注1', 1, '0'),
+    (2, '产品2', 49.99, '这是产品2的描述。', '备注2', 1, '0'),
+    (3, '产品3', 199.99, '这是产品3的描述。', '备注3', 2, '0'),
+    (4, '产品4', 79.99, '这是产品4的描述。', '备注4', 2, '0'),
+    (5, '产品5', 149.99, '这是产品5的描述。', '备注5', 3, '0'),
+    (6, '产品6', 69.99, '这是产品6的描述。', '备注6', 3, '0'),
+    (7, '产品7', 129.99, '这是产品7的描述。', '备注7', 4, '0'),
+    (8, '产品8', 89.99, '这是产品8的描述。', '备注8', 4, '0'),
+    (9, '产品9', 179.99, '这是产品9的描述。', '备注9', 5, '0'),
+    (10, '产品10', 99.99, '这是产品10的描述。', '备注10', 5, '0'),
+    (11, '产品11', 99.99, '这是产品11的描述。', '备注11', 6, '0'),
+    (12, '产品12', 49.99, '这是产品12的描述。', '备注12', 6, '0'),
+    (13, '产品13', 199.99, '这是产品13的描述。', '备注13', 7, '0'),
+    (14, '产品14', 79.99, '这是产品14的描述。', '备注14', 7, '0'),
+    (15, '产品15', 149.99, '这是产品15的描述。', '备注15', 8, '0'),
+    (16, '产品16', 69.99, '这是产品16的描述。', '备注16', 8, '0'),
+    (17, '产品17', 129.99, '这是产品17的描述。', '备注17', 9, '0'),
+    (18, '产品18', 89.99, '这是产品18的描述。', '备注18', 9, '0'),
+    (19, '产品19', 179.99, '这是产品19的描述。', '备注19', 10, '0'),
+    (20, '产品20', 99.99, '这是产品20的描述。', '备注20', 10, '0');
 
 
-INSERT INTO employee (employee_id, employee_name, employee_password, employee_level, employee_phone, employee_salary, remarks)
-VALUES
-    (1, 'John Smith', 'password123', '0', '123-456-7890', 3000.00, 'Store manager'),
-    (2, 'Jane Doe', 'secret456', '1', '234-567-8901', 2500.00, 'Sales representative'),
-    (3, 'Mike Johnson', 'pass789', '1', '345-678-9012', 2500.00, 'Sales representative'),
-    (4, 'Sarah Thompson', 'secure987', '1', '456-789-0123', 2500.00, 'Sales representative'),
-    (5, 'David Miller', 'password321', '1', '567-890-1234', 2500.00, 'Sales representative'),
-    (6, 'Amy Wilson', 'admin123', '2', '678-901-2345', 3500.00, 'Supervisor'),
-    (7, 'Michael Brown', 'secret789', '2', '789-012-3456', 3500.00, 'Supervisor'),
-    (8, 'Jennifer Davis', 'pass123', '2', '890-123-4567', 3500.00, 'Supervisor'),
-    (9, 'Daniel Wilson', 'password789', '2', '901-234-5678', 3500.00, 'Supervisor'),
-    (10, 'Emily Johnson', 'secure456', '2', '012-345-6789', 3500.00, 'Supervisor');
+INSERT INTO purchase (id, quantity, total_price, time, remarks, employee_id, is_del) VALUES
+    (1, 10, 999.99, '2024-06-20 10:30:00', '备注1', 1, '0'),
+    (2, 5, 249.95, '2024-06-20 14:45:00', '备注2', 2, '0'),
+    (3, 8, 1599.92, '2024-06-21 09:15:00', '备注3', 3, '0'),
+    (4, 3, 359.97, '2024-06-21 11:20:00', '备注4', 4, '0'),
+    (5, 12, 1799.88, '2024-06-22 13:55:00', '备注5', 5, '0'),
+    (6, 7, 489.93, '2024-06-22 16:40:00', '备注6', 6, '0'),
+    (7, 9, 1169.91, '2024-06-23 10:10:00', '备注7', 7, '0'),
+    (8, 4, 359.96, '2024-06-23 12:45:00', '备注8', 8, '0'),
+    (9, 6, 899.94, '2024-06-24 09:30:00', '备注9', 9, '0'),
+    (10, 2, 199.98, '2024-06-24 14:20:00', '备注10', 10, '0'),
+    (11, 7, 699.93, '2024-06-25 11:05:00', '备注11', 1, '0'),
+    (12, 3, 359.97, '2024-06-25 15:30:00', '备注12', 2, '0'),
+    (13, 5, 999.95, '2024-06-26 10:20:00', '备注13', 3, '0'),
+    (14, 10, 1999.90, '2024-06-26 13:45:00', '备注14', 4, '0'),
+    (15, 6, 539.94, '2024-06-27 09:55:00', '备注15', 5, '0'),
+    (16, 4, 499.96, '2024-06-27 11:40:00', '备注16', 6, '0'),
+    (17, 9, 899.91, '2024-06-28 14:25:00', '备注17', 7, '0'),
+    (18, 7, 699.93, '2024-06-28 16:55:00', '备注18', 8, '0'),
+    (19, 2, 199.98, '2024-06-29 10:05:00', '备注19', 9, '0'),
+    (20, 8, 1599.92, '2024-06-29 12:30:00', '备注20', 10, '0');
 
-INSERT INTO purchase (purchase_id, employee_id, purchase_quantity, purchase_total_price, purchase_time, remarks)
-VALUES
-    (1, 1, 5, 249.95, '2024-06-16 10:00:00', 'Purchase of laptops'),
-    (2, 2, 10, 699.90, '2024-06-16 11:30:00', 'Purchase of TVs'),
-    (3, 3, 20, 399.80, '2024-06-16 13:45:00', 'Purchase of T-Shirts'),
-    (4, 4, 3, 2399.97, '2024-06-16 14:30:00', 'Purchase of sofas'),
-    (5, 5, 8, 799.92, '2024-06-16 15:15:00', 'Purchase of refrigerators'),
-    (6, 6, 50, 499.50, '2024-06-16 16:00:00', 'Purchase of shampoos'),
-    (7, 7, 100, 499.00, '2024-06-16 16:45:00', 'Purchase of cereals'),
-    (8, 8, 15, 749.85, '2024-06-16 17:30:00', 'Purchase of headphones'),
-    (9, 9, 4, 1999.96, '2024-06-16 18:15:00', 'Purchase of chairs'),
-    (10, 10, 6, 479.94, '2024-06-16 19:00:00', 'Purchase of microwaves');
 
-INSERT  INTO User (user_account, user_password,user_level)
-VALUES
-    ('123','123','0'),
-    ('shen','123','0');
+INSERT INTO detail (id, quantity, total_price, purchase_id, product_id, remarks, is_del) VALUES
+    (1, 2, 199.98, 1, 1, '备注1', '0'),
+    (2, 1, 49.99, 1, 2, '备注2', '0'),
+    (3, 4, 799.96, 2, 3, '备注3', '0'),
+    (4, 2, 159.98, 2, 4, '备注4', '0'),
+    (5, 6, 899.94, 3, 5, '备注5', '0'),
+    (6, 3, 209.97, 3, 6, '备注6', '0'),
+    (7, 8, 1039.92, 4, 7, '备注7', '0'),
+    (8, 4, 359.96, 4, 8, '备注8', '0'),
+    (9, 3, 449.97, 5, 9, '备注9', '0'),
+    (10, 1, 99.99, 5, 10, '备注10', '0'),
+    (11, 4, 399.96, 6, 11, '备注11', '0'),
+    (12, 2, 99.98, 6, 12, '备注12', '0'),
+    (13, 5, 999.95, 7, 13, '备注13', '0'),
+    (14, 3, 239.97, 7, 14, '备注14', '0'),
+    (15, 7, 1049.93, 8, 15, '备注15', '0'),
+    (16, 4, 279.96, 8, 16, '备注16', '0'),
+    (17, 2, 259.98, 9, 17, '备注17', '0'),
+    (18, 1, 44.99, 9, 18, '备注18', '0'),
+    (19, 3, 539.97, 10, 19, '备注19', '0'),
+    (20, 2, 199.98, 10, 20, '备注20', '0');

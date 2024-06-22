@@ -9,13 +9,13 @@ import lombok.Data;
 public class User {
     // 用户编号
     @TableId()
-    private Long userId;
-
+    private Long id;
     // 用户账号
-    private String userAccount;
-
+    private String account;
     // 用户密码
-    private String userPassword;
-
-    private String UserLevel;
+    private String password;
+    // 用户权限
+    private Integer level;
+    // 是否删除
+    private Integer is_del;
 }

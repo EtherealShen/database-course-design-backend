@@ -4,22 +4,19 @@ package com.sd.model.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-public class Purchase {
-
-    // 采购订单编号
-    @TableId
-    private Long id;
+public class Detail {
+    // 明细号
+    @TableId()
+    private Integer id;
     // 采购数量
     private Long quantity;
-    // 员工编号（外码）
-    private Integer employeeId;
     // 采购价格
     private double totalPrice;
-    // 采购日期
-    private Date time;
+    // 采购订单编号
+    private Long purchaseId;
+    // 产品编号
+    private Long productId;
     // 备注
     private String remarks;
     // 是否删除

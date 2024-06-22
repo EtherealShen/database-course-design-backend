@@ -2,12 +2,10 @@ package com.sd.controller;
 
 
 import cn.hutool.jwt.JWTUtil;
-import com.sd.common.MetaData;
 import com.sd.common.Response;
 import com.sd.common.CodeImage;
-import com.sd.common.TabBar;
-import com.sd.model.domain.UserLoginRequest;
-import com.sd.model.domain.UserRegisterRequest;
+import com.sd.model.dto.UserLoginRequest;
+import com.sd.model.dto.UserRegisterRequest;
 import com.sd.model.entity.User;
 import com.sd.service.UserService;
 import io.swagger.annotations.Api;
@@ -18,12 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -43,62 +38,57 @@ public class UserController {
 
     @ApiOperation("用户登录接口")
     @PostMapping("/login")
-    public Response<User> UserLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletResponse httpServletResponse) {
+    public Response UserLogin(@RequestBody UserLoginRequest userLoginRequest) {
 
-        String userAccount = userLoginRequest.getAccount();
-        String userPassword = userLoginRequest.getPassword();
+        String account = userLoginRequest.getAccount();
+        String password = userLoginRequest.getPassword();
+        String code = userLoginRequest.getCode();
 
-        Long result = userService.userLogin(userAccount, userPassword);
+        Long result = userService.userLogin(account, password,code);
         if (result == -1) {
-            MetaData metaData = new MetaData(402, "账号不存在");
-            return new Response<>(200, metaData);
+            return Response.error("用户不存在");
         } else if (result == -2) {
-            MetaData metaData = new MetaData(403, "密码错误");
-            return new Response<>(200, metaData);
+            return Response.error("密码错误");
+        } else if (result == -3) {
+            return Response.error("验证码错误");
         }
         User user = userService.getById(result);
         HashMap<String, Object> tokenMap = new HashMap<>();
-        tokenMap.put("accout",user.getUserAccount());
-        tokenMap.put("id",user.getUserId());
-        // 生成token
-        String token = JWTUtil.createToken(tokenMap,tokenKey.getBytes());
-        MetaData metaData = new MetaData(200, "登录成功",token);
-        return new Response<>(200, user, metaData);
+        tokenMap.put("account", user.getAccount());
+        tokenMap.put("id", user.getId());
 
+        String token = JWTUtil.createToken(tokenMap, tokenKey.getBytes());
+        return Response.success(user, token);
     }
 
     @ApiOperation("用户注册接口")
     @PostMapping("/register")
-    public Response<User> UserRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
+    public Response UserRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
 
-        String userAccount = userRegisterRequest.getAccount();
-        String userPassword = userRegisterRequest.getPassword();
+        String account = userRegisterRequest.getAccount();
+        String password = userRegisterRequest.getPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
-        String code = userRegisterRequest.getCode();
 
-        Long result = userService.userRegister(userAccount, userPassword, checkPassword, code);
-
+        Long result = userService.userRegister(account, password, checkPassword);
         if (result == -1) {
-            MetaData metaData = new MetaData(500, "出错，注册失败");
-            return new Response<>(200, metaData);
+            return Response.error("注册失败");
         } else if (result == -2) {
-            MetaData metaData = new MetaData(401, "该账号已存在");
-            return new Response<>(200, metaData);
+            return Response.error("该账号已存在");
+        } else if (result == -3) {
+            return Response.error("密码不一致");
         }
-        MetaData metaData = new MetaData(200, "注册成功");
         User user = userService.getById(result);
-        return new Response<>(200, user, metaData);
+        return Response.success(user);
     }
 
     @ApiOperation("获取验证码接口")
     @GetMapping("/getVerifiCodeImage")
-    public void getCodeImage(HttpSession session, HttpServletResponse response) throws IOException {
+    public void getCodeImage(HttpServletResponse response) throws IOException {
         BufferedImage codeImage = CodeImage.getVerifiCodeImage();
         String code = new String(CodeImage.getVerifiCode());
-        redisTemplate.opsForValue().set("verifiCode", code);
-        redisTemplate.expire("verifiCode", 60, TimeUnit.SECONDS);
-        session.setAttribute("code", code);
+        String key = String.format("%sCode",code);
+        redisTemplate.opsForValue().set(key, code);
+        redisTemplate.expire(key, 60, TimeUnit.SECONDS);
         ImageIO.write(codeImage, "JPG", response.getOutputStream());
-
     }
 }
