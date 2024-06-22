@@ -26,7 +26,7 @@ public class ProducerController {
 
     @ApiOperation("新增客户接口")
     @PostMapping()
-    public Response saveCustomer(@RequestBody Producer producer){
+    public Response saveProducer(@RequestBody Producer producer){
         if(producerService.save(producer)){
             return Response.success();
         }
@@ -35,22 +35,26 @@ public class ProducerController {
 
     @ApiOperation("删除客户接口")
     @DeleteMapping ()
-    public Response delCustomer(@RequestParam("id") Long id){
-        if(producerService.removeById(id)){
-            return Response.success();
+    public Response delProducer(@RequestParam("id") Long id){
+        try {
+            if(producerService.removeById(id)){
+                return Response.success();
+            }
+        }catch (Exception e){
+            return Response.error("数据删除失败，产品表相关数据关联！！！");
         }
         return Response.error();
     }
 
     @ApiOperation("查询客户接口")
     @GetMapping ("{id}")
-    public Response getCustomerById(@PathVariable("id") Long id){
+    public Response getProducerById(@PathVariable("id") Long id){
         return Response.success(producerService.getById(id));
     }
 
     @ApiOperation("修改客户接口")
     @PutMapping()
-    public Response updateCustomer(@RequestBody Producer producer){
+    public Response updateProducer(@RequestBody Producer producer){
         UpdateWrapper<Producer> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", producer.getId());
         if(producerService.update(producer,updateWrapper)){

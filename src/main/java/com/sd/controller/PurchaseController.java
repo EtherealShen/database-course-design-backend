@@ -37,8 +37,12 @@ public class PurchaseController {
     @ApiOperation("删除采购订单接口")
     @DeleteMapping ()
     public Response delPurchase(@RequestParam("id") Long id){
-        if(purchaseService.removeById(id)){
-            return Response.success();
+        try {
+            if(purchaseService.removeById(id)){
+                return Response.success();
+            }
+        } catch (Exception e){
+            return Response.error("数据删除失败，采购明细表有相关数据关联！！！");
         }
         return Response.error();
     }

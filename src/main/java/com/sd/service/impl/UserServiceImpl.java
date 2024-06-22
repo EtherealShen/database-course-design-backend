@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 @Service
@@ -36,23 +37,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Long userLogin(String account, String password,String code) {
-        String key = String.format("%sCode",code);
-        if(redisTemplate.opsForValue().get(key).equals(code)){
-            String encryptPassword = DigestUtils.md5DigestAsHex((SALT + password).getBytes());
-            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("account", account);
-            User user = userMapper.selectOne(queryWrapper);
-            // 账号不存在
-            if (user == null) {
-                return -1L;
+        try {
+            String code_true = redisTemplate.opsForValue().get("Code").toString().toLowerCase();
+            System.out.println(code_true);
+            System.out.println(code);
+            if(code_true.equals(code.toLowerCase())){
+                String encryptPassword = DigestUtils.md5DigestAsHex((SALT + password).getBytes());
+                QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("account", account);
+                User user = userMapper.selectOne(queryWrapper);
+                // 账号不存在
+                if (user == null) {
+                    return -1L;
+                }
+                // 密码错误
+                if (!encryptPassword.equals(user.getPassword())) {
+                    return -2L;
+                }
+                return user.getId();
             }
-            // 密码错误
-            if (!encryptPassword.equals(user.getPassword())) {
-                return -2L;
-            }
-            return user.getId();
+            return -3L;
+        } catch (Exception e){
+            return -4L;
         }
-        return -3L;
     }
 
     @Override

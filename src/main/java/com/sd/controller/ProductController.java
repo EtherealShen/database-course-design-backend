@@ -33,9 +33,14 @@ public class ProductController {
     @ApiOperation("删除产品接口")
     @DeleteMapping()
     public Response delProduct(@RequestParam("id") Long id){
-        if(productService.removeById(id)){
-            return Response.success();
+        try {
+            if(productService.removeById(id)){
+                return Response.success();
+            }
+        }catch (Exception e){
+            return Response.error("数据删除失败，采购明细表有相关数据关联！！！");
         }
+
         return Response.error();
     }
 

@@ -33,8 +33,12 @@ public class EmployeeController {
     @ApiOperation("删除员工接口")
     @DeleteMapping ()
     public Response delEmployee(@RequestParam("id") Long id){
-        if(employeeService.removeById(id)){
-            return Response.success();
+        try {
+            if (employeeService.removeById(id)) {
+                return Response.success();
+            }
+        } catch (Exception e) {
+            return Response.error("数据删除失败，采购主表有相关数据关联！！！");
         }
         return Response.error();
     }

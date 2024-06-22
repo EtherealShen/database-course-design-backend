@@ -24,7 +24,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
         Page<Purchase> purchasePage;
         if(!query.isEmpty()){
             QueryWrapper<Purchase> prurchaseQueryWrapper = new QueryWrapper<>();
-            prurchaseQueryWrapper.like("name",query);
+            prurchaseQueryWrapper.like("id",query);
             purchasePage = purchaseMapper.selectPage(new Page<>(pageNum, pageSize), prurchaseQueryWrapper);
         }else {
             purchasePage = purchaseMapper.selectPage(new Page<>(pageNum, pageSize), null);

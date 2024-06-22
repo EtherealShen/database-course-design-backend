@@ -51,6 +51,8 @@ public class UserController {
             return Response.error("密码错误");
         } else if (result == -3) {
             return Response.error("验证码错误");
+        } else if (result == -4) {
+            return Response.error("验证码过期，请刷新页面");
         }
         User user = userService.getById(result);
         HashMap<String, Object> tokenMap = new HashMap<>();
@@ -86,9 +88,8 @@ public class UserController {
     public void getCodeImage(HttpServletResponse response) throws IOException {
         BufferedImage codeImage = CodeImage.getVerifiCodeImage();
         String code = new String(CodeImage.getVerifiCode());
-        String key = String.format("%sCode",code);
-        redisTemplate.opsForValue().set(key, code);
-        redisTemplate.expire(key, 60, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set("Code", code);
+        redisTemplate.expire("Code", 60, TimeUnit.SECONDS);
         ImageIO.write(codeImage, "JPG", response.getOutputStream());
     }
 }
