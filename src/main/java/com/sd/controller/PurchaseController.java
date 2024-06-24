@@ -2,8 +2,11 @@ package com.sd.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.sd.common.CsvExportUtil;
 import com.sd.common.Response;
+import com.sd.mapper.PurchaseMapper;
 import com.sd.model.entity.Employee;
+import com.sd.model.entity.Product;
 import com.sd.model.entity.Purchase;
 
 import com.sd.service.PurchaseService;
@@ -13,6 +16,10 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,11 +32,19 @@ public class PurchaseController {
     @Resource
     private PurchaseService purchaseService;
 
+    @Resource
+    private PurchaseMapper purchaseMapper;
+
     @ApiOperation("新增采购订单接口")
     @PostMapping()
     public Response savePurchase(@RequestBody Purchase purchase){
-        if(purchaseService.save(purchase)){
-            return Response.success();
+        try {
+            purchase.setTotalPrice(0);
+            if(purchaseService.save(purchase)){
+                return Response.success();
+            }
+        } catch (Exception e) {
+            return Response.error("该编号采购主表已存在！！！");
         }
         return Response.error();
     }
@@ -72,4 +87,39 @@ public class PurchaseController {
         return total>0?Response.success(map):Response.error("数据不足");
     }
 
+    @ApiOperation("导出成csv文件")
+    @GetMapping("/export")
+    public void exportToCsv(HttpServletResponse response) {
+        try {
+            List<Purchase> purchases = purchaseMapper.selectList(null);
+            // 转换数据类型
+            List<Map<String, Object>> dataMapList = new ArrayList<>();
+            for (Purchase purchase : purchases) {
+                Map<String, Object> dataMap = new HashMap<>();
+                dataMap.put("id", purchase.getId());
+                dataMap.put("quantity", purchase.getQuantity());
+                dataMap.put("total_price",purchase.getTotalPrice());
+                dataMap.put("time", purchase.getTime());
+                dataMap.put("remarks", purchase.getRemarks());
+                dataMapList.add(dataMap);
+            }
+            /*
+             * 构造导出数据结构
+             */
+            String titles = "编号,数量,总价,时间,备注"; // 设置表头
+            // 设置每列字段
+            String keys = "id,quantity,total_price,time,remarks";
+            // 设置响应头
+            CsvExportUtil.responseSetProperties("purchase", response);
+            // 获取响应输出流
+            OutputStream outputStream = response.getOutputStream();
+            // 执行导出
+            CsvExportUtil.doExport(dataMapList, titles, keys, outputStream);
+            // 关闭输出流
+            outputStream.close();
+        } catch (Exception e) {
+            // 处理异常
+            e.printStackTrace();
+        }
+    }
 }

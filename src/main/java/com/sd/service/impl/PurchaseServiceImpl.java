@@ -10,6 +10,7 @@ import com.sd.service.PurchaseService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,5 +36,16 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseMapper, Purchase> i
         map.put("records",records);
         map.put("total",total);
         return map;
+    }
+
+    @Override
+    public BigDecimal getTotalPriceSum() {
+        QueryWrapper<Purchase> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("SUM(total_price)");
+        return purchaseMapper.selectObjs(queryWrapper)
+                .stream().
+                findFirst()
+                .map(obj -> (BigDecimal) obj)
+                .orElse(BigDecimal.ZERO);
     }
 }

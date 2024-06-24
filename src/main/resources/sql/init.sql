@@ -1,5 +1,6 @@
 DROP DATABASE IF EXISTS Supermarket;
 
+
 CREATE DATABASE Supermarket;
 
 USE Supermarket;
@@ -61,8 +62,8 @@ CREATE TABLE product (
 -- 创建采购表purchase
 CREATE TABLE purchase (
     id INT PRIMARY KEY NOT NULL,
-    quantity INT NOT NULL,
-    total_price DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL DEFAULT 0,
+    total_price DECIMAL(10, 2) NOT NULL DEFAULT 0,
     time DATETIME NOT NULL ,
     remarks TEXT NULL DEFAULT NULL,
     employee_id INT NOT NULL,
@@ -75,7 +76,7 @@ CREATE TABLE purchase (
 CREATE TABLE detail (
     id INT PRIMARY KEY NOT NULL,
     quantity INT NOT NULL,
-    total_price DECIMAL(10, 2) NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL DEFAULT 0,
     purchase_id INT NOT NULL,
     product_id INT NOT NULL,
     remarks TEXT NULL DEFAULT NULL,
@@ -84,3 +85,18 @@ CREATE TABLE detail (
     FOREIGN KEY (purchase_id) REFERENCES purchase (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
     FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
+
+
+create definer = root@localhost view details_view as
+select `Supermarket`.`detail`.`id`         AS `detail_id`,
+       `Supermarket`.`purchase`.`id`         AS `purchase_id`,
+       `Supermarket`.`product`.`id`         AS `product_id`,
+       `Supermarket`.`detail`.`quantity`          AS `quantity`,
+       `Supermarket`.`product`.`unit_price` AS `unit_price`,
+       `Supermarket`.`detail`.`total_price`      AS `total_price`,
+       `Supermarket`.`detail`.`remarks`     AS `remarks`
+from `Supermarket`.`detail`
+         join `Supermarket`.`product`
+         join `Supermarket`.purchase
+where ( (`Supermarket`.`detail`.`purchase_id` = `Supermarket`.`purchase`.`id`) AND
+    (`Supermarket`.`detail`.`product_id` = `Supermarket`.`product`.`id`));
