@@ -22,14 +22,13 @@ import java.util.List;
 import java.util.Map;
 
 @Api(tags = "订单明细接口")
+@SuppressWarnings("all")
 @RestController
 @RequestMapping("/detail")
 public class DetailController {
 
     @Resource
     private DetailService detailService;
-    @Resource
-    private ProductMapper productMapper;
     @Resource
     private DetailMapper detailMapper;
 

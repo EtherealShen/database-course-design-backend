@@ -94,7 +94,7 @@ public class EmployeeController {
                 Map<String, Object> dataMap = new HashMap<>();
                 dataMap.put("id", employee.getId());
                 dataMap.put("name", employee.getName());
-                dataMap.put("password",employee.getPassword());
+//                dataMap.put("password",employee.getPassword());
                 dataMap.put("level", employee.getLevel());
                 dataMap.put("tel", employee.getTel());
                 dataMap.put("salary", employee.getSalary());
